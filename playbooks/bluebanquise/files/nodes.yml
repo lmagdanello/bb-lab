@@ -1,0 +1,30 @@
+all:
+  hosts:
+    mgt1:
+      network_interfaces:
+        - interface: dummy0
+          ip4: 10.0.0.11
+          network: 
+          skip: true
+          never_default4: true
+    mgt2:
+      network_interfaces:
+        - interface: dummy0
+          ip4: 10.0.0.12
+          network: 
+          skip: true
+          never_default4: true
+    login1:
+      network_interfaces:
+        - interface: dummy0
+          ip4: 10.0.0.13
+          network: 
+          skip: true
+          never_default4: true
+    c001:
+      network_interfaces:
+        - interface: dummy0
+          ip4: 10.0.0.14
+          network: 
+          skip: true
+          never_default4: true

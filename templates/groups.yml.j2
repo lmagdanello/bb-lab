@@ -1,0 +1,15 @@
+{%- set groups = {} -%}
+{%- for vm_name, attributes in vms.items() %}
+    {%- set group = attributes['group'] -%}
+    {%- if group not in groups -%}
+        {%- set _ = groups.update({group: []}) -%}
+    {%- endif -%}
+    {%- set _ = groups[group].append(attributes['hostnames']['primary']) -%}
+{%- endfor %}
+{%- for group_name, nodes in groups.items() %}
+[{{ group_name }}]
+{%- for node in nodes %}
+{{ node }}
+
+{%- endfor %}
+{% endfor %}

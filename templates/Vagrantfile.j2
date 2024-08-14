@@ -1,0 +1,53 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "{% if vm_box is defined -%}{{ vm_box }}{% else %}generic/rhel9{%- endif %}"
+  
+  config.ssh.insert_key = 'true'
+
+  {% if vms is defined -%}
+  {% for name, attributes in vms.items() -%}
+  config.vm.define :{{ name }} do |c|
+    c.vm.hostname = "{{ attributes['hostnames']['primary'] }}"
+    c.vm.network :private_network, ip: "{{ attributes['ip'] }}"
+    
+    {% if 'networks' in attributes -%}
+    {% for network in attributes['networks'] -%}
+    c.vm.network :{{ network['type'] }}, ip: "{{ network['ip'] }}"
+    {% endfor -%}
+    {% endif -%}
+
+    {% if 'port_forwarding' in attributes -%}{% for guest, host in attributes['port_forwarding'] -%}
+    c.vm.network :forwarded_port, guest: {{ guest }}, host: {{ host }}, auto_correct: true
+    {% endfor -%}
+    {% endif -%}
+
+    {% if attributes['group'] == 'management' %}
+    c.vm.provision :ansible do |ansible|
+      ansible.playbook = "../playbooks/playbook.yml"    
+    end
+    {% endif %}
+
+    c.vm.provider :virtualbox do |vb|
+
+      {% for disk in attributes['disks'] -%}
+      disk_path = File.expand_path("./{{ name }}-disk-{{ loop.index }}.vmdk")
+      disk_port = "{{ loop.index0 + 1 }}" # 1-based port number
+      
+      unless File.exist?(disk_path)
+        vb.customize ['createhd', '--filename', disk_path, '--size', "{{ disk['size'] }}"]
+        vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', disk_port, '--device', '0', '--type', 'hdd', '--medium', disk_path]
+      end
+
+      {% endfor -%}
+    end
+
+  end
+
+  {% endfor -%}
+  {% endif -%}
+end

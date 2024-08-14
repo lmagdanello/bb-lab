@@ -1,0 +1,90 @@
+---
+- name: <vagrant> | Add Vagrant to sudoers
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    line: 'vagrant ALL=NOPASSWD: ALL'
+    state: present
+
+- name: <vagrant> | Configure ssh key
+  ansible.builtin.file:
+    path: "/root/.ssh"
+    state: directory
+    mode: '0755'
+
+- name: <vagrant> | Create ID RSA
+  ansible.builtin.shell: ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa
+
+- name: <vagrant> | Enable PasswordAuthentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#PasswordAuthentication yes'  
+    line: 'PasswordAuthentication yes'
+    state: present
+
+- name: <vagrant> | Copy Vagrant authorized_keys to root
+  ansible.builtin.shell: cat /home/vagrant/.ssh/authorized_keys >> /root/.ssh/authorized_keys
+ 
+- name: <os> Install EPEL repository
+  ansible.builtin.package: 
+    name: epel-release
+    state: present
+
+- name: <bluebanquise> Configure Bluebanquise repository
+  copy:
+    dest: /etc/yum.repos.d/bluebanquise.repo
+    content: |
+      [bluebanquise]
+      name=Bluebanquise Repository
+      baseurl=http://bluebanquise.com/repository/releases/latest/el9/x86_64/bluebanquise/
+      enabled=1
+      gpgcheck=1
+      gpgkey=http://bluebanquise.com/repository/releases/latest/el9/x86_64/bluebanquise/RPM-GPG-KEY-bluebanquise
+
+- name: <os> | Update package index
+  ansible.builtin.yum:
+    update_cache: yes
+
+- name: <os> | Install dependencies
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ bluebanquise_packages_to_install }}"
+
+- name: <bluebanquise> | Create BlueBanquise install directory
+  ansible.builtin.file:
+    path: "{{ bluebanquise_install_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: <bluebanquise> | Download BlueBanquise
+  ansible.builtin.get_url:
+    url: "{{ bluebanquise_download_url }}"
+    dest: "/tmp/bluebanquise.tar.gz"
+
+- name: <bluebanquise> | Extract BlueBanquise
+  ansible.builtin.unarchive:
+    src: "/tmp/bluebanquise.tar.gz"
+    dest: "{{ bluebanquise_install_dir }}"
+    extra_opts: [--strip-components=1, --overwrite]
+    remote_src: yes
+
+- name: <bluebanquise> | Create BlueBanquise inventory structure
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items: "{{ bluebanquise_inventory_structure }}"
+
+- name: <bluebanquise> | Copy bb_core.yml to inventory
+  ansible.builtin.shell: cp "{{ bluebanquise_install_dir }}/resources/bb_core.yml" "{{ bluebanquise_inventory_directory }}/group_vars/all/bb_core.yml"
+
+- name: <bluebanquise> | Copy nodes.yml to inventory
+  ansible.builtin.copy:
+    src: "files/nodes.yml"
+    dest: "{{ bluebanquise_inventory_directory }}/cluster/nodes/nodes.yml"
+
+- name: <bluebanquise> | Copy groups.yml to inventory
+  ansible.builtin.copy:
+    src: "files/groups.yml"
+    dest: "{{ bluebanquise_inventory_directory }}/cluster/groups/groups.yml"

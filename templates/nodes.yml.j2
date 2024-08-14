@@ -1,0 +1,13 @@
+all:
+  hosts:
+    {%- for vm_name, attributes in vms.items() %}
+    {{ vm_name }}:
+      network_interfaces:
+        {%- for network in attributes.get('networks', []) %}
+        - interface: {{ network.get('interface', 'dummy0') }}
+          ip4: {{ network['ip'] }}
+          network: {{ network['network'] }}
+          skip: true
+          never_default4: true
+        {%- endfor -%}
+    {% endfor %}
