@@ -10,3 +10,6 @@ build/
 .vagrant/
 .vagrantignore
 vagrant/
+
+# VSCode
+.vscode/

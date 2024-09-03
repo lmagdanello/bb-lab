@@ -29,15 +29,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     {% if attributes['group'] == 'management' %}
     c.vm.provision :ansible do |ansible|
       ansible.playbook = "../playbooks/playbook.yml"
-      {% if 'http_proxy' in attributes -%}
+      {% if 'http_proxy' is defined -%}
       ansible.extra_vars = {
-        http_proxy: "{{ attributes['http_proxy'] }}",
-        https_proxy: "{{ attributes['https_proxy'] }}"
+        http_proxy: "{{ http_proxy }}",
+        {% if 'https_proxy' is defined -%}
+        https_proxy: "{{ https_proxy }}"
+        {% endif -%}
       }
       {% endif -%}
     end
     {% endif %}
 
+    {% if 'disks' in attributes -%}
     c.vm.provider :virtualbox do |vb|
 
       {% for disk in attributes['disks'] -%}
@@ -51,6 +54,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       {% endfor -%}
     end
+    {% endif -%}
 
   end
 
