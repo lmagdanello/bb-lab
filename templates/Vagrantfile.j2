@@ -28,7 +28,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     {% if attributes['group'] == 'management' %}
     c.vm.provision :ansible do |ansible|
-      ansible.playbook = "../playbooks/playbook.yml"    
+      ansible.playbook = "../playbooks/playbook.yml"
+      {% if 'http_proxy' in attributes -%}
+      ansible.extra_vars = {
+        http_proxy: "{{ attributes['http_proxy'] }}",
+        https_proxy: "{{ attributes['https_proxy'] }}"
+      }
+      {% endif -%}
     end
     {% endif %}
 

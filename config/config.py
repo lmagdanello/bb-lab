@@ -1,7 +1,8 @@
 vagrant_config = {
     'vm_box': 'generic/rocky9',
     'bluebanquise_version': '3.0.1',
-    
+#    'http_proxy': 'http://',
+#    'https_proxy': 'http://',
     'vms': {
         'mgt1': {
             'ip': '192.168.56.10',

@@ -45,6 +45,8 @@ Edit the `config/config.py` file to define the configuration for your virtual ma
 vagrant_config = {
     'vm_box': 'generic/rocky9',
     'bluebanquise_version': '3.0.1',
+#   'http_proxy': 'http://',
+#   'https_proxy': 'http://',
     'vms': {
         'mgt1': {
             'ip': '192.168.56.10',
@@ -80,6 +82,8 @@ vagrant_config = {
     },
 }
 ```
+
+> **If you need to use HTTP Proxy, uncomment the section: `'http_proxy': 'http://'` or `'https_proxy': 'http://'` and add your proxy URL**
 
 > **At least one node must be assigned to the `management` group for the Ansible playbook to be applied correctly.**
 
