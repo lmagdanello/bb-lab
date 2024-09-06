@@ -128,17 +128,13 @@ python main.py
 
 4. **Generate RSA keys**
 
-Run the commando below to generate your RSA keys.
+Run the command below to generate your RSA keys and insert into `settings.yml`:
 
 ```bash
-ssh-keygen -t ed25519 -f playbooks/bluebanquise/files/id_ed25519
+ssh-keygen -t ed25519 -f playbooks/bluebanquise/files/id_ed25519 -N '' && pub_key=$(cat playbooks/bluebanquise/files/id_ed25519.pub) && sed -i "/os_admin_ssh_keys:/c\os_admin_ssh_keys: '$pub_key'" playbooks/bluebanquise/files/settings.yml
 ```
 
-5. **Add RSA key to inventory**
-
-Update `os_admin_ssh_keys` inside `playbooks/bluebanquise/files/settings.yml`.
-
-6. **Initialize the Environment**
+5. **Initialize the Environment**
 
 Use Vagrant to create and configure the virtual machines:
 

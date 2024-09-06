@@ -79,30 +79,24 @@
     src: "files/repositories.yml"
     dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/repositories.yml"
 
-- name: <os> | Register OS distribution and version
-  ansible.builtin.shell: "cat /etc/os-release | grep '^ID=' | cut -d'=' -f2 | xargs"
-  register: os_distribution
-
 - name: <bluebanquise> | Create OS inventory
   ansible.builtin.file:
-    path: "{{ bluebanquise_inventory_directory }}/group_vars/{{ os_distribution.stdout }}"
+    path: "{{ bluebanquise_inventory_directory }}/group_vars/{{ ansible_distribution_version }}"
     state: directory
     mode: '0755'
-  register: bluebanquise_os_inventory
 
 - name: <bluebanquise> | Copy settings.yml to OS inventory
   ansible.builtin.copy:
     src: "files/settings.yml"
-    dest: "{{ bluebanquise_os_inventory }}/settings.yml"
+    dest: "{{ bluebanquise_inventory_directory }}/group_vars/{{ ansible_distribution_version }}/settings.yml"
 
 - name: <bluebanquise> | Create playbooks directory
   ansible.builtin.file:
     path: "{{ bluebanquise_main_directory }}/playbooks"
     state: directory
     mode: '0755'
-  register: bluebanquise_playbooks_directory
   
-- name: <bluebanquise> | Copy managements.yml to plabyooks
+- name: <bluebanquise> | Copy managements.yml playbooks
   ansible.builtin.copy:
     src: "files/managements.yml"
-    dest: "{{ bluebanquise_playbooks_directory }}/managements.yml"
+    dest: "{{ bluebanquise_main_directory }}/playbooks/managements.yml"
