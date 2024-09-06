@@ -7,8 +7,6 @@ vagrant_config = {
     'vms_network': 'net-1',
     'vms_subnet': '10.0.0.0',
     'vms_prefix': '16',
-#    'http_proxy': 'http://',
-#    'https_proxy': 'http://',
     'vms': {
         'mgt1': {
             'ip': '10.0.0.11',

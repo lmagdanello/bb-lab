@@ -9,4 +9,4 @@ os_keyboard_layout: us
 os_system_language: en_US.UTF-8
 
 os_admin_password_sha512: $6$JLtp9.SYoijB3T0Q$q43Hv.ziHgC9mC68BUtSMEivJoTqUgvGUKMBQXcZ0r5eWdQukv21wHOgfexNij7dO5Mq19ZhTR.JNTtV89UcH0
-os_admin_ssh_keys: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/hGnhThXzItMftHnIkIo/RZlhtYV4TrdT46FooBLsV vagrant'
+os_admin_ssh_keys: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFmN8ixdJnoC9b7mn+s58s1CIuUxcrUFkevXtB55oADo lmagdanello@starlightbeacon'

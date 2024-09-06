@@ -37,7 +37,7 @@
   with_items: "{{ bluebanquise_inventory_structure }}"
 
 - name: <bluebanquise> | Copy bb_core.yml to inventory
-  ansible.builtin.shell: cp "{{ bluebanquise_install_dir }}/resources/bb_core.yml" "{{ bluebanquise_inventory_directory }}/group_vars/all/bb_core.yml"
+  ansible.builtin.shell: cp "{{ bluebanquise_main_directory }}/resources/bb_core.yml" "{{ bluebanquise_inventory_directory }}/group_vars/all/bb_core.yml"
 
 - name: <bluebanquise> | Copy nodes.yml to inventory
   ansible.builtin.copy:
