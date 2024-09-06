@@ -134,7 +134,11 @@ Run the commando below to generate your RSA keys.
 ssh-keygen -t ed25519 -f playbooks/bluebanquise/files/id_ed25519
 ```
 
-5. **Initialize the Environment**
+5. **Add RSA key to inventory**
+
+Update `os_admin_ssh_keys` inside `playbooks/bluebanquise/files/settings.yml`.
+
+6. **Initialize the Environment**
 
 Use Vagrant to create and configure the virtual machines:
 
