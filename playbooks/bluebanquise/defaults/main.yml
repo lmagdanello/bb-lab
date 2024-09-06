@@ -1,9 +1,6 @@
 ---
 
-bluebanquise_version: 3.0.1
-bluebanquise_download_url: "https://github.com/bluebanquise/bluebanquise/archive/refs/tags/{{ bluebanquise_version }}.tar.gz"
-bluebanquise_install_dir: "/etc/bluebanquise"
-bluebanquise_inventory_directory: "/etc/bluebanquise/inventory"
+bluebanquise_inventory_directory: "/var/lib/bluebanquise/bluebanquise/inventory"
 bluebanquise_inventory_structure:
   - "{{ bluebanquise_inventory_directory}}/group_vars/all"
   - "{{ bluebanquise_inventory_directory}}/cluster/nodes"

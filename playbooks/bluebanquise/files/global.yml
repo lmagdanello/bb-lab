@@ -1,0 +1,3 @@
+bb_domain_name: bluebanquise.example.com
+bb_time_zone: America/Sao_Paulo
+bb_cluster_name: bluebanquise-cluster

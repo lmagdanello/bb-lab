@@ -4,6 +4,8 @@ bluebanquise_role_version: 1.0.0
 bluebanquise_role_name: bluebanquise
 bluebanquise_role_description: "BlueBanquise role for managing BlueBanquise nodes"
 bluebanquise_packages_to_install:
+  - wget
+  - curl
   - python3
   - python3-pip
   - ansible

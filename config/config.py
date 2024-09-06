@@ -4,6 +4,9 @@ vagrant_config = {
     'ssh.insert_key': 'false',
     'ssh.private_key_path': '~/.vagrant.d/insecure_private_key',
     'bluebanquise_version': '3.0.1',
+    'vms_network': 'net-1',
+    'vms_subnet': '10.0.0.0',
+    'vms_prefix': '16',
 #    'http_proxy': 'http://',
 #    'https_proxy': 'http://',
     'vms': {

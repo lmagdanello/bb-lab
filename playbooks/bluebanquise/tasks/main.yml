@@ -20,45 +20,15 @@
 - name: <vagrant> | Add RSA key to authorized_keys
   ansible.builtin.shell: cat /home/vagrant/.ssh/id_ed25519.pub >> /home/vagrant/.ssh/authorized_keys
 
-- name: <bluebanquise> Configure Bluebanquise repository
-  copy:
-    dest: /etc/yum.repos.d/bluebanquise.repo
-    content: |
-      [bluebanquise]
-      name=Bluebanquise Repository
-      baseurl=http://bluebanquise.com/repository/releases/latest/el9/x86_64/bluebanquise/
-      enabled=1
-      gpgcheck=1
-      gpgkey=http://bluebanquise.com/repository/releases/latest/el9/x86_64/bluebanquise/RPM-GPG-KEY-bluebanquise
-
-- name: <os> | Update package index
-  ansible.builtin.yum:
-    update_cache: yes
-
 - name: <os> | Install dependencies
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items: "{{ bluebanquise_packages_to_install }}"
 
-- name: <bluebanquise> | Create BlueBanquise install directory
-  ansible.builtin.file:
-    path: "{{ bluebanquise_install_dir }}"
-    state: directory
-    mode: '0755'
-
-- name: <bluebanquise> | Download BlueBanquise
-  ansible.builtin.get_url:
-    url: "{{ bluebanquise_download_url }}"
-    dest: "/tmp/bluebanquise.tar.gz"
-
-- name: <bluebanquise> | Extract BlueBanquise
-  ansible.builtin.unarchive:
-    src: "/tmp/bluebanquise.tar.gz"
-    dest: "{{ bluebanquise_install_dir }}"
-    extra_opts: [--strip-components=1, --overwrite]
-    remote_src: yes
-
+- name: <bluebanquise> | Online Bootstrap
+  ansible.builtin.shell: "curl -o online_bootstrap.sh https://raw.githubusercontent.com/bluebanquise/bluebanquise/master/bootstrap/online_bootstrap.sh && chmod +x online_bootstrap.sh && sudo ./online_bootstrap.sh --silent"
+  
 - name: <bluebanquise> | Create BlueBanquise inventory structure
   ansible.builtin.file:
     path: "{{ item }}"
@@ -78,3 +48,18 @@
   ansible.builtin.copy:
     src: "files/groups.yml"
     dest: "{{ bluebanquise_inventory_directory }}/cluster/groups/groups.yml"
+
+- name: <bluebanquise> | Copy repositories.yml to inventory
+  ansible.builtin.copy:
+    src: "files/repositories.yml"
+    dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/repositories.yml"
+
+- name: <bluebanquise> | Copy global.yml to inventory
+  ansible.builtin.copy:
+    src: "files/global.yml"
+    dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/global.yml"
+
+- name: <bluebanquise> | Copy networks.yml to inventory
+  ansible.builtin.copy:
+    src: "files/global.yml"
+    dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/networks.yml"

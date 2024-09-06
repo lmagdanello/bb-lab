@@ -1,0 +1,5 @@
+repositories:
+  - name: bluebanquise
+    baseurl: http://bluebanquise.com/repository/releases/latest/el9/x86_64/bluebanquise/
+    enabled: 1
+    state: present

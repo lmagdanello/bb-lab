@@ -48,39 +48,39 @@ vagrant_config = {
     'ssh.insert_key': 'false',
     'ssh.private_key_path': '~/.vagrant.d/insecure_private_key',
     'bluebanquise_version': '3.0.1',
+    'vms_network': 'net-1',
+    'vms_subnet': '10.0.0.0',
+    'vms_prefix': '16',
 #    'http_proxy': 'http://',
 #    'https_proxy': 'http://',
     'vms': {
         'mgt1': {
-            'ip': '192.168.56.10',
+            'ip': '10.0.0.11',
             'group': 'management',
             'hostnames': {
                 'primary': 'mgt1',
                 'others': ['mgt1.bluebanquise.example.com'],
             },
             'port_forwarding': [(80, 8081), (8080, 8082)],
-            'networks': [{'type': 'private_network', 'ip': '10.0.0.11'}],
             'disks': [{'size': '1024', 'controller': 'sata'}, {'size': '1024', 'controller': 'sata'}],
         },
         'login1': {
-            'ip': '192.168.56.12',
+            'ip': '10.0.0.12',
             'group': 'login',
             'hostnames': {
                 'primary': 'login1',
                 'others': ['login1.bluebanquise.example.com'],
             },
             'port_forwarding': [(80, 8085)],
-            'networks': [{'type': 'private_network', 'ip': '10.0.0.13'}],
         },
         'c001': {
-            'ip': '192.168.56.13',
+            'ip': '10.0.0.13',
             'group': 'compute',
             'hostnames': {
                 'primary': 'c001',
                 'others': ['c001.bluebanquise.example.com'],
             },
             'port_forwarding': [(80, 8086)],
-            'networks': [{'type': 'private_network', 'ip': '10.0.0.14'}],
         },
     },
 }
