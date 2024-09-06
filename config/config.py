@@ -1,8 +1,8 @@
 vagrant_config = {
     'vm_box': 'generic/rocky9',
     'ssh_host': '127.0.0.1',
-    'ssh.insert_key': 'false',
-    'ssh.private_key_path': '~/.vagrant.d/insecure_private_key',
+    'ssh_insert_key': 'false',
+    'ssh_private_key_path': '~/.vagrant.d/insecure_private_key',
     'bluebanquise_version': '3.0.1',
     'vms_network': 'net-1',
     'vms_subnet': '10.0.0.0',

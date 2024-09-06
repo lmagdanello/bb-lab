@@ -6,5 +6,4 @@ all:
         - interface: eth1
           ip4: {{ attributes['ip'] }}
           network: {{ vms_network }}
-        {%- endfor -%}
     {% endfor %}

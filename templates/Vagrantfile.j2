@@ -7,13 +7,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "{% if vm_box is defined -%}{{ vm_box }}{% else %}generic/rhel9{%- endif %}"
   
-  {%if ssh_host is defined -%}
+  {% if ssh_host is defined -%}
   config.ssh.host = "{{ ssh_host }}"
   {% endif -%}
-  {%if ssh_insert_key is defined -%}
+  {% if ssh_insert_key is defined -%}
   config.ssh.insert_key = {{ ssh_insert_key }}
   {% endif -%}
-  {%if ssh_private_key_path is defined -%}
+  {% if ssh_private_key_path is defined -%}
   config.ssh.private_key_path = "{{ ssh_private_key_path }}"
   {% endif -%}
 
