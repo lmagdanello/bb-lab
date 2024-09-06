@@ -80,7 +80,7 @@
     dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/repositories.yml"
 
 - name: <os> | Register OS distribution and version
-  ansible.builtin.shell: "cat /etc/os-release | grep '^ID=' | cut -d'=' -f2"
+  ansible.builtin.shell: "cat /etc/os-release | grep '^ID=' | cut -d'=' -f2 | xargs"
   register: os_distribution
 
 - name: <bluebanquise> | Create OS inventory
