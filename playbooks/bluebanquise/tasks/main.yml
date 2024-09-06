@@ -66,7 +66,7 @@
 
 - name: <bluebanquise> | Copy networks.yml to inventory
   ansible.builtin.copy:
-    src: "files/global.yml"
+    src: "files/networks.yml"
     dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/networks.yml"
 
 - name: <bluebanquise> | Copy global.yml to inventory
