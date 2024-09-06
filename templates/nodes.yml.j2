@@ -4,7 +4,7 @@ all:
     {{ vm_name }}:
       network_interfaces:
         - interface: eth1
-          ip4: {{ attributes['ip4'] }}
-          network: net-1
+          ip4: {{ attributes['ip'] }}
+          network: {{ vms_network }}
         {%- endfor -%}
     {% endfor %}

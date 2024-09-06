@@ -49,17 +49,60 @@
     src: "files/groups.yml"
     dest: "{{ bluebanquise_inventory_directory }}/cluster/groups/groups.yml"
 
-- name: <bluebanquise> | Copy repositories.yml to inventory
+- name: <bluebanquise> | Create fn inventory
   ansible.builtin.copy:
-    src: "files/repositories.yml"
-    dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/repositories.yml"
+    src: "files/fn"
+    dest: "{{ bluebanquise_inventory_directory }}/cluster/groups/fn"
+
+- name: <bluebanquise> | Create hw inventory
+  ansible.builtin.copy:
+    src: "files/hw"
+    dest: "{{ bluebanquise_inventory_directory }}/cluster/groups/hw"
+
+- name: <bluebanquise> | Create os inventory
+  ansible.builtin.copy:
+    src: "files/os"
+    dest: "{{ bluebanquise_inventory_directory }}/cluster/groups/os"
+
+- name: <bluebanquise> | Copy networks.yml to inventory
+  ansible.builtin.copy:
+    src: "files/global.yml"
+    dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/networks.yml"
 
 - name: <bluebanquise> | Copy global.yml to inventory
   ansible.builtin.copy:
     src: "files/global.yml"
     dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/global.yml"
 
-- name: <bluebanquise> | Copy networks.yml to inventory
+- name: <bluebanquise> | Copy repositories.yml to inventory
   ansible.builtin.copy:
-    src: "files/global.yml"
-    dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/networks.yml"
+    src: "files/repositories.yml"
+    dest: "{{ bluebanquise_inventory_directory }}/group_vars/all/repositories.yml"
+
+- name: <os> | Register OS distribution and version
+  ansible.builtin.shell: "cat /etc/os-release | grep '^ID=' | cut -d'=' -f2"
+  register: os_distribution
+
+- name: <bluebanquise> | Create OS inventory
+  ansible.builtin.file:
+    path: "{{ bluebanquise_inventory_directory }}/group_vars/{{ os_distribution.stdout }}"
+    state: directory
+    mode: '0755'
+  register: bluebanquise_os_inventory
+
+- name: <bluebanquise> | Copy settings.yml to OS inventory
+  ansible.builtin.copy:
+    src: "files/settings.yml"
+    dest: "{{ bluebanquise_os_inventory }}/settings.yml"
+
+- name: <bluebanquise> | Create playbooks directory
+  ansible.builtin.file:
+    path: "{{ bluebanquise_main_directory }}/playbooks"
+    state: directory
+    mode: '0755'
+  register: bluebanquise_playbooks_directory
+  
+- name: <bluebanquise> | Copy managements.yml to plabyooks
+  ansible.builtin.copy:
+    src: "files/managements.yml"
+    dest: "{{ bluebanquise_playbooks_directory }}/managements.yml"

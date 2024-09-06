@@ -20,3 +20,7 @@ if __name__ == '__main__':
     generate_file('Vagrantfile.j2', 'vagrant/Vagrantfile', vagrant_config)
     generate_file('nodes.yml.j2', 'playbooks/bluebanquise/files/nodes.yml', vagrant_config)
     generate_file('groups.yml.j2', 'playbooks/bluebanquise/files/groups.yml', vagrant_config)
+    generate_file('networks.yml.j2', 'playbooks/bluebanquise/files/networks.yml', vagrant_config)
+    generate_file('fn.yml.j2', 'playbooks/bluebanquise/files/fn', vagrant_config)
+    generate_file('hw.yml.j2', 'playbooks/bluebanquise/files/hw', vagrant_config)
+    generate_file('os.yml.j2', 'playbooks/bluebanquise/files/os', vagrant_config)

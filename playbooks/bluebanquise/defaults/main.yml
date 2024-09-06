@@ -1,5 +1,6 @@
 ---
 
+bluebanquise_main_directory: "/var/lib/bluebanquise/bluebanquise"
 bluebanquise_inventory_directory: "/var/lib/bluebanquise/bluebanquise/inventory"
 bluebanquise_inventory_structure:
   - "{{ bluebanquise_inventory_directory}}/group_vars/all"
