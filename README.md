@@ -44,9 +44,12 @@ Edit the `config/config.py` file to define the configuration for your virtual ma
 ```python
 vagrant_config = {
     'vm_box': 'generic/rocky9',
+    'ssh_host': '127.0.0.1',
+    'ssh.insert_key': 'false',
+    'ssh.private_key_path': '~/.vagrant.d/insecure_private_key',
     'bluebanquise_version': '3.0.1',
-#   'http_proxy': 'http://',
-#   'https_proxy': 'http://',
+#    'http_proxy': 'http://',
+#    'https_proxy': 'http://',
     'vms': {
         'mgt1': {
             'ip': '192.168.56.10',
@@ -123,7 +126,15 @@ Run the Python script to generate the necessary configuration files:
 python main.py
 ```
 
-4. **Initialize the Environment**
+4. **Generate RSA keys**
+
+Run the commando below to generate your RSA keys.
+
+```bash
+ssh-keygen -t ed25519 -f playbooks/bluebanquise/files/id_ed25519
+```
+
+5. **Initialize the Environment**
 
 Use Vagrant to create and configure the virtual machines:
 

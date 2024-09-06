@@ -10,6 +10,8 @@ build/
 .vagrant/
 .vagrantignore
 vagrant/
+id_ed25519
+id_ed25519.pub
 
 # VSCode
 .vscode/
