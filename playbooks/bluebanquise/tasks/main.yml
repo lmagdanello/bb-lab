@@ -20,6 +20,16 @@
 - name: <vagrant> | Add RSA key to authorized_keys
   ansible.builtin.shell: cat /home/vagrant/.ssh/id_ed25519.pub >> /home/vagrant/.ssh/authorized_keys
 
+- name: <os> | Disallow SSH password authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+    state: present
+    validate: "/usr/sbin/sshd -t -f %s"
+  notify:
+    - Restart SSH
+
 - name: <os> | Install dependencies
   ansible.builtin.package:
     name: "{{ item }}"
