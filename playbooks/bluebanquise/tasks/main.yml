@@ -20,11 +20,11 @@
 - name: <vagrant> | Add RSA key to authorized_keys
   ansible.builtin.shell: cat /home/vagrant/.ssh/id_ed25519.pub >> /home/vagrant/.ssh/authorized_keys
 
-- name: <os> | Disallow SSH password authentication
+- name: <os> | Allow SSH password authentication
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^PasswordAuthentication"
-    line: "PasswordAuthentication no"
+    line: "PasswordAuthentication yes"
     state: present
     validate: "/usr/sbin/sshd -t -f %s"
   notify:
@@ -91,14 +91,20 @@
 
 - name: <bluebanquise> | Create OS inventory
   ansible.builtin.file:
-    path: "{{ bluebanquise_inventory_directory }}/group_vars/{{ ansible_distribution_version }}"
+    path: "{{ bluebanquise_inventory_directory }}/group_vars/os_{{ ansible_distribution }}_{{ ansible_distribution_version }}"
     state: directory
     mode: '0755'
 
 - name: <bluebanquise> | Copy settings.yml to OS inventory
   ansible.builtin.copy:
     src: "files/settings.yml"
-    dest: "{{ bluebanquise_inventory_directory }}/group_vars/{{ ansible_distribution_version }}/settings.yml"
+    dest: "{{ bluebanquise_inventory_directory }}/group_vars/os_{{ ansible_distribution }}_{{ ansible_distribution_version }}/settings.yml"
+
+- name: <bluebanquise> | Create HW inventory
+  ansible.builtin.file:
+    path: "{{ bluebanquise_inventory_directory }}/group_vars/hw_vagrant_vm"
+    state: directory
+    mode: '0755'
 
 - name: <bluebanquise> | Create playbooks directory
   ansible.builtin.file:
